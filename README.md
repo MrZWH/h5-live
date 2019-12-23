@@ -24,11 +24,11 @@ h5 直播
 ## 直播原理
 
 流程图：
-![流程图](https://github.com/MrZWH/MrZWH.github.io/blob/master/images/%E7%9B%B4%E6%92%AD%E6%B5%81%E7%A8%8B%E5%9B%BE.PNG?raw=true)
+![直播流程图](./images/直播流程图.png)
 
 收集的数据一开始是以原始二进制流的形式，通过 websocket 也好 http 也好，上传到服务器。原始的流不能用播放器播放，必须采用一定的协议做编码。H.264(视频的编码)、AAC（音频的编码）。
-视频格式与浏览器兼容：
-![流程图](https://github.com/MrZWH/MrZWH.github.io/blob/master/images/%E8%A7%86%E9%A2%91%E6%A0%BC%E5%BC%8F%E5%92%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E6%94%AF%E6%8C%81.PNG?raw=true)
+视频格式与浏览器兼容：  
+![视频格式和浏览器支持](./images/视频格式和浏览器支持.png)
 YouTube 使用的 webm，流式的视频格式，hls 标准来说不是一种视频格式，是一种apple公司推出的视频协议，对视频来说是 ts 文件`.ts`格式，flv b站的视频格式，是早期的 flash 的视频格式，b站的 h5 播放器也能播放 flv 格式的，为什么呢？
 
 ## 直播协议
@@ -46,7 +46,7 @@ YouTube 使用的 webm，流式的视频格式，hls 标准来说不是一种视
 
 ### HLS 协议
 
-![image](https://github.com/MrZWH/MrZWH.github.io/blob/master/images/hls%E5%8D%8F%E8%AE%AE.PNG?raw=true)
+![image](./images/hls协议.png)
 对于 hls 协议，它会给一个 M3U8 文件。直播跟点播最大的区别：不会一下子给视频地址，会给一个M3U8 索引文件，浏览器会根据 索引文件的片段时长自动跟新 m3u8 文件。
 
 #### HLS 协议快速预览
@@ -60,7 +60,7 @@ YouTube 使用的 webm，流式的视频格式，hls 标准来说不是一种视
 
 #### m3u8 文件
 
-![image](https://user-images.githubusercontent.com/24401665/71319786-f1200000-24dd-11ea-8ce9-78e98d5f4e7e.png)
+![m3u8](./images/m3u8.png)
 
 m3u8 文件里面存放的是索引，每个索引对应这一个 ts 文件，但有时 m3u8 文件里可以嵌套 m3u8 文件。有时候拿到一个 m3u8 文件播放不了需要排查浏览器是否支持。
 
@@ -71,7 +71,7 @@ m3u8 文件还细分为几类：
 - vod playlist 全量列表 （vod 英文意思“点播”）
 
 m3u8 文件动态列表里面的内容：
-![m3u8 content](https://github.com/MrZWH/MrZWH.github.io/blob/master/images/m3u8%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9.PNG?raw=true)
+![m3u8文件内容](./images/m3u8文件内容.png)
 
 m3u8 文件是纯文本文件，不是多媒体的流。  
 文件内容第一行是 m3u8 文件的版本，使用时需要看浏览器是否支持该版本。
@@ -113,7 +113,7 @@ HTL 是直播里应用最广泛的协议
 
 #### ts 文件
 
-![ts file](https://github.com/MrZWH/MrZWH.github.io/blob/master/images/ts%E6%96%87%E4%BB%B6.PNG?raw=true)
+![ts文件](./images/ts文件.png)
 
 第一个 ts 文件会有一个 PAT 包，这个包告诉你要去找一个 PMT 的包，PMT 包告诉你后面会解析到 ts 包，告诉你这些 ts 包哪些是视频哪些是音频，很多个ts 组成一个叫 PES 的东西。  
 浏览器解析一个视频需要知道视频帧和音频帧，哪些ts 包能组成一个帧？需要解析 ts 规范，ts 中有个 header 它会告诉你这些信息。
@@ -124,12 +124,12 @@ RTMP 是 Real TIme Messaging Protocol（实时消息传输协议）的首字母�
 
 视频音频的采集以PC 端为主，如果不是通过 web 的方式来做而是通过客户端的方式来做，这时基本走 RTMP 协议，如果采集端用 web 端来做，比如 h5 ，那么它的协议叫做 webRTC，这是两种不同的技术方案。通常给主播的是客户端采用RTMP 效率比较高。
 
-![rtmp通信过程](https://github.com/MrZWH/MrZWH.github.io/blob/master/images/rtmp%E9%80%9A%E4%BF%A1%E8%BF%87%E7%A8%8B.PNG?raw=true)
+![rtmp通信过程](./images/rtmp通信过程.png)
 RTMP 协议在传输过程中也是 flv 视频格式的，只是通信的手段不一样，tcp 通信有三次应答，hls 是 http 的不需要走 3次应答的过程。所以使用 rtmp 时需要注意跟用户端的应答处理。
 
 #### HTTP-FLV 协议
 
-![HTTP-FLV通信过程](https://github.com/MrZWH/MrZWH.github.io/blob/master/images/http-flv%E9%80%9A%E4%BF%A1%E8%BF%87%E7%A8%8B.PNG?raw=true)
+![HTTP-FLV通信过程](./images/http-flv通信过程.png)
 
 RTMP 的升级版，RTMP 比 hls 用起来更复杂，hls 实时性差，因为请求一个 m3u8 文件会请求到多个 ts 文件，所以延时的程度跟 ts 文件的切片分片数量有关系。HTTP-FLV 结合了 hls http 请求的优点和 rtmp 低延时的特性，中间建立了一个 flv 长连接。因为中间建立了一个长连接所以通信过程没那么复杂，唯一跟 rtmp 的区别就是播放器跟 cdn 建立的连接是直接的 http 请求。
 
@@ -151,9 +151,9 @@ RTMP 的升级版，RTMP 比 hls 用起来更复杂，hls 实时性差，因为�
   
 ## video 详解
 
-在 video src 中有些地址回事 `blob:https://...`开头的地址，这是虚拟地址，下载不到的。
-![video](https://github.com/MrZWH/MrZWH.github.io/blob/master/images/video%E5%B1%9E%E6%80%A7%E5%92%8C%E6%96%B9%E6%B3%95.PNG?raw=true)
-![video](https://github.com/MrZWH/MrZWH.github.io/blob/master/images/video%E6%A0%87%E7%AD%BE%E7%9A%84%E4%BA%8B%E4%BB%B6.PNG?raw=true)
+在 video src 中有些地址回事 `blob:https://...`开头的地址，这是虚拟地址，下载不到的。  
+![video属性和方法](./images/video属性和方法.png)
+![video标签的事件](./images/video标签的事件.png)
 
 ### 实战 h5live-demo
 
@@ -285,4 +285,5 @@ eslint --init
 
 监控？弹幕？刷礼物？点播？省流量？自定义皮肤？
 
-<https://github.com/cucygh/h5live><https://github.com/cucygh>
+<https://github.com/cucygh/h5live>  
+<https://github.com/cucygh>
